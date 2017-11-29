@@ -54,7 +54,7 @@ function pickWords(){
     }
 
   
-    document.getElementById("prompt-card").innerHTML = correctWord;
+    document.getElementById("prompt-card").innerHTML = "Definition of " + correctWord;
 }
 
 function getRandomNumber(min, max){
