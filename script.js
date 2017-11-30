@@ -10,6 +10,9 @@ var defsArray;
 var requestSleepTime = 20;
 var answered = false;
 var correctAnswer = -1;
+var highScore = 0;
+var currentScore = 0;
+var cookieNeverExpire = 365 * 20;
  
 function onCreate() {
     def_card_0 = document.getElementById("def-card-0");
@@ -18,6 +21,22 @@ function onCreate() {
     def_card_3 = document.getElementById("def-card-3");
 
     getFile("words.txt");
+    setInterval(updateScore, 100);
+
+    var highScoreCookie = Cookies.get('highscore');
+    if(highScoreCookie != undefined){
+        highScore = highScoreCookie;
+    }
+}
+
+function updateScore(){
+    if(currentScore > highScore){
+        highScore = currentScore;
+        Cookies.set('highscore', highScore, { expires: cookieNeverExpire });
+    }
+
+    var scoreText = document.getElementById("score-box");
+    scoreText.innerHTML = "Score: " + currentScore + " &nbsp; &nbsp; " + "High Score: " + highScore;
 }
 
 function parseWordString(request) {
@@ -89,6 +108,9 @@ function onGuess(name) {
 
     if(correctAnswer == name){
         console.log("Correct");
+        currentScore++;
+    }else{
+        currentScore = 0;
     }
     for (let index = 0; index < buttons.length; index++) {
         const element = buttons[index];
